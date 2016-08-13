@@ -3,6 +3,117 @@
 #include "gtest/gtest.h"
 #include <List.h>
 
+TEST(List, begin)
+{
+	List<int> lst;
+
+	EXPECT_EQ(lst.end(), lst.begin());
+
+	lst.push_back(1);
+	EXPECT_EQ(1, *(lst.begin()));		// 1
+
+	lst.push_back(5);
+	EXPECT_EQ(1, *(lst.begin()));		// 1 5
+
+	lst.push_front(7);
+	EXPECT_EQ(7, *(lst.begin()));		// 7 1 5
+		
+	lst.pop_front();
+	EXPECT_EQ(1, *(lst.begin()));		// 1 5
+
+	lst.pop_back();
+	EXPECT_EQ(1, *(lst.begin()));		// 1
+
+	EXPECT_NE(lst.end(), lst.begin());
+	lst.pop_front();					// empty
+	// List is now empty
+	EXPECT_EQ(lst.end(), lst.begin());
+}
+
+TEST(List, end)
+{
+	List<int> lst;
+
+	// Empty list
+	EXPECT_EQ(lst.end(), lst.begin());
+
+	lst.push_back(4);
+	List<int>::iterator p = lst.end();
+	--p;
+	EXPECT_EQ(4, *p);
+
+	lst.pop_front();
+	// Empty list
+	EXPECT_EQ(lst.end(), lst.begin());
+
+	lst.push_back(9);
+	p = lst.end();
+	--p;
+	EXPECT_EQ(9, *p);
+
+	lst.push_front(5);
+	EXPECT_EQ(9, *p);
+
+	lst.push_back(3);
+	p = lst.end();
+	--p;
+	EXPECT_EQ(3, *p);
+}
+
+TEST(List, front)
+{
+	List<int> lst;
+
+	// Calling front() on empty lists causes exception
+	EXPECT_THROW(lst.front(), std::out_of_range);
+
+	lst.push_back(9);				// 9
+	EXPECT_EQ(9, lst.front());
+
+	lst.push_back(14);				// 9 14
+	EXPECT_EQ(9, lst.front());
+
+	lst.push_front(2);				// 2 9 14
+	EXPECT_EQ(2, lst.front());
+
+	lst.pop_front();				// 9 14
+	EXPECT_EQ(9, lst.front());
+
+	lst.pop_back();					// 9
+	EXPECT_EQ(9, lst.front());
+
+	lst.pop_front();				// empty
+	EXPECT_THROW(lst.front(), std::out_of_range);
+}
+
+TEST(List, back)
+{
+	List<int> lst;
+
+	// Calling front() on empty lists causes exception
+	EXPECT_THROW(lst.back(), std::out_of_range);
+
+	// Add elements
+	lst.push_back(5);				// 5
+	EXPECT_EQ(5, lst.back());
+
+	lst.push_front(6);				// 6 5
+	EXPECT_EQ(5, lst.back());
+
+	lst.push_back(10);				// 6 5 10
+	EXPECT_EQ(10, lst.back());
+
+	// Remove elements
+	lst.pop_front();				// 5 10
+	EXPECT_EQ(10, lst.back());
+
+	lst.pop_back();					// 5
+	EXPECT_EQ(5, lst.back());
+
+	lst.pop_front();				// Empty
+	EXPECT_THROW(lst.back(), std::out_of_range);
+}
+
 TEST(List, push_back)
 {
 	List<int> lst1;
@@ -114,6 +225,16 @@ TEST(List, pop_front)
 	ASSERT_THROW(lst.pop_front(), std::out_of_range);
 }
 
+TEST(List, pop_back)
+{
+
+}
+
+TEST(List, mixed_pops)
+{
+
+}
+
 TEST(List, size)
 {
 	List<int> lst;
@@ -159,4 +280,9 @@ TEST(List, size)
 
 	EXPECT_ANY_THROW(lst.pop_back());
 	EXPECT_EQ(0, lst.size());
+}
+
+TEST(List, testIteration)
+{
+
 }

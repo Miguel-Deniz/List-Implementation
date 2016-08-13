@@ -4,9 +4,10 @@
 
 #include <stdexcept>
 
-double cubic(double d)
+int addOne(int x)
 {
-	return pow(d, 3);
+
+	return x;
 }
 
 template<class Elem> struct Link
@@ -38,8 +39,14 @@ public:
 
 	List(const List<T>& l)
 	{
-		_firstLink = 0;
-		_lastLink = 0;
+		_firstLink = new Link<T>();
+		_lastLink = new Link<T>();
+
+		_firstLink->_prev = 0;
+		_firstLink->_succ = _lastLink;
+
+		_lastLink->_prev = _firstLink;
+		_lastLink->_succ = 0;
 		_size = 0;
 
 		for (Link<T>* ptr = l._firstLink; ptr != 0; ptr = ptr->_succ)
@@ -51,16 +58,13 @@ public:
 
 	iterator begin()	// iterator to first element
 	{
-		return iterator(_firstLink);
+		return iterator(_firstLink->_succ);
 	}
 
 	iterator end()		// iterator to one beyond last element
 	{
 		return iterator(_lastLink);
 	}
-
-	//iterator insert(iterator p, const T& v);
-	//iterator erase(iterator p);
 	
 	void push_back(const T& v)
 	{
@@ -93,6 +97,7 @@ public:
 
 		_size = _size + 1;
 	}
+	
 	void push_front(const T& v)
 	{
 		if (_size == 0)
@@ -132,6 +137,8 @@ public:
 		_size = _size - 1;
 	}
 
+	// Returns the value of the element at the front of the list
+	// Throws std::out_of_range exception if the list is empty
 	T& front()
 	{
 		if (_size == 0)
@@ -140,6 +147,8 @@ public:
 		return _firstLink->_succ->_val;
 	}
 
+	// Returns the value of the element at the back of the list
+	// Throws std::out_of_range exception if the list is empty
 	T& back()
 	{
 		if (_size == 0)
