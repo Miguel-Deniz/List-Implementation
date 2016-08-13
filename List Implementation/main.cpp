@@ -1,6 +1,15 @@
-#include "List.h"
+/*	Author: Miguel Deniz
+	Date:	8/11/16
 
-int main()
+	Custom List Implementation
+
+	Uses Google Test Framework
+*/
+
+#include "List.h"
+#include <gtest\gtest.h>
+
+int main(int argc, char **argv)
 {
 
 }
